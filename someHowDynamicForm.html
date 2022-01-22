@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Form</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.12.6/babel.min.js "></script>
+
+    <script type="text/babel">
+      const App = () => {
+        const [name, setName] = React.useState("")
+        const isLowerCase = name === name.toLowerCase()
+
+        const error = isLowerCase ? null : "please insert lower case chars"
+
+        const handleNameChange = (event) => {
+          setName(event.target.value)
+        }
+
+        const handleSubmit = (event) => {
+          event.preventDefault()
+          console.log(`%cName: ${name} submitted`, `color: green`)
+        }
+        return (
+          <div>
+            <form onSubmit={handleSubmit} style={formStyles}>
+              <div>
+                <label htmlFor="name">Name</label>
+                <input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={handleNameChange}
+                />
+              </div>
+              <button disabled={Boolean(error)} type="submit">
+                Submit
+              </button>
+            </form>
+
+            <div>
+              <div style={nameErrorStyles}>{error}</div>
+              <h4 style={nameStyles}>{isLowerCase && name}</h4>
+            </div>
+          </div>
+        )
+      }
+
+      const formStyles = {
+        display: "flex",
+        justifyContent: "center",
+      }
+
+      const nameErrorStyles = {
+        display: "flex",
+        justifyContent: "center",
+        color: "red",
+      }
+
+      const nameStyles = {
+        display: "flex",
+        justifyContent: "center",
+      }
+
+      ReactDOM.render(<App />, document.getElementById("root"))
+    </script>
+  </body>
+</html>
