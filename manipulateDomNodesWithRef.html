@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manipulate DOM Nodes</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/vanilla-tilt@1.7.2/dist/vanilla-tilt.min.js"></script>
+    <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.12.6/babel.min.js "></script>
+
+    <script type="text/babel">
+      const BoxElement = () => {
+        const tiltRef = React.useRef()
+
+        React.useEffect(() => {
+          const tiltNode = tiltRef.current
+          const vanillaTiltOptions = {
+            max: 25,
+            speed: 10,
+            glare: true,
+            "max-glare": 0.5,
+          }
+
+          VanillaTilt.init(tiltNode, vanillaTiltOptions)
+        }, [])
+        return (
+          <div ref={tiltRef} style={boxStyles}>
+            <div style={smallBoxStyles}></div>
+          </div>
+        )
+      }
+      const boxStyles = {
+        width: "25rem",
+        height: "25rem",
+        margin: "auto",
+        marginTop: "12rem",
+        border: "1px solid black",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }
+      const smallBoxStyles = {
+        width: "10rem",
+        height: "10rem",
+        border: "1px solid red",
+      }
+      ReactDOM.render(<BoxElement />, document.getElementById("root"))
+    </script>
+  </body>
+</html>
