@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Handling Error Boundaries 💣</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.12.6/babel.min.js "></script>
+    <script src="https://unpkg.com/react-error-boundary@1.2.5/dist/umd/react-error-boundary.js"></script>
+
+    <script type="text/babel">
+      //   class ErrorBoundary extends React.Component {
+      //     state = { error: null }
+
+      //     static getDerivedStateFromError(error) {
+      //       return { error }
+      //     }
+      //     render() {
+      //       const { error } = this.state
+      //       if (error) {
+      //         return <this.props.FallbackComponent error={error} />
+      //       }
+      //       return this.props.children
+      //     }
+      //   }
+
+      const ErrorBoundary = ReactErrorBoundary.ErrorBoundary
+
+      const ErrorFallBack = ({ error }) => {
+        return (
+          <>
+            <p>Soemthing went wrong...</p>
+            <pre>{error.message}</pre>
+          </>
+        )
+      }
+ 
+      const Bomb = () => {
+        throw new Error(`Boom! 💣`)
+      }
+      const App = () => {
+        const [explode, setExplode] = React.useState(false)
+        return (
+          <>
+            <button onClick={() => setExplode(!explode)}> 💣 </button>
+            <h2>
+              <ErrorBoundary FallbackComponent={ErrorFallBack}>
+                {explode ? <Bomb /> : "Push the explode button"}
+              </ErrorBoundary>
+            </h2>
+          </>
+        )
+      }
+      ReactDOM.render(<App />, document.getElementById("root"))
+    </script>
+  </body>
+</html>
