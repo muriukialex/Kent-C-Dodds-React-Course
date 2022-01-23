@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Show flow of hooks</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.12.6/babel.min.js "></script>
+
+    <script type="text/babel">
+      const App = () => {
+        console.log("%crender start", "color: MediumSpringGreen")
+
+        const [child, showChild] = React.useState(() => {
+          console.log("%cuseState callback", "color: tomato")
+          return false
+        })
+
+        React.useEffect(() => {
+          console.log("%cuseEffect no dependencies", "color: LightCoral")
+          return () => {
+            console.log(
+              "%cuseEffect no dependencies clean up",
+              "color: LightCoral"
+            )
+          }
+        })
+
+        React.useEffect(() => {
+          console.log("%cuseEffect empty dependencies", "color: LightCoral")
+          return () => {
+            console.log(
+              "%cuseEffect empty dependencies clean up",
+              "color: LightCoral"
+            )
+          }
+        }, [])
+        return (
+          <>
+            <h1>App component</h1>
+          </>
+        )
+      }
+      ReactDOM.render(<App />, document.getElementById("root"))
+    </script>
+  </body>
+</html>

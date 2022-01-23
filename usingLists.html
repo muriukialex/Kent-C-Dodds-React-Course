@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>using lists in React 📝</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.12.6/babel.min.js "></script>
+
+    <script type="text/babel">
+      const App = () => {
+        const [item, setItem] = React.useState({
+          itemName: "",
+          itemIsDone: false,
+        })
+
+        const [listItems, setListItems] = React.useState([])
+
+        const handleItemChange = (event) => {
+          setItem({ ...item, itemName: event.target.value })
+        }
+
+        // const handleMarkDone = (itemName) => {
+        //   const newList = listItems.map((item) => {
+        //     if (item.itemName === itemName) {
+        //       setListItems({ ...item, itemIsDone: !item.itemIsDone })
+        //     }
+        //   })
+        //   console.log(newList)
+        // }
+
+        const handleRemoveItem = (itemName) => {
+          const newList = listItems.filter((item) => item.itemName !== itemName)
+          setListItems(newList)
+        }
+
+        const handleSubmit = (event) => {
+          event.preventDefault()
+          if (item.itemName === "") {
+            return
+          }
+          setListItems([...listItems, item])
+          setItem({
+            itemName: "",
+            itemIsDone: false,
+          })
+        }
+
+        React.useEffect(() => {
+          console.log(listItems)
+        }, [listItems])
+
+        React.useEffect(() => {
+          console.log("%cthis is not the BEST way for filtering", "color: red")
+        }, [])
+
+        return (
+          <div style={bodyStyle}>
+            <form onSubmit={handleSubmit}>
+              <label htmlFor="item">Item</label>
+              <input
+                type="text"
+                id="item"
+                value={item.itemName}
+                onChange={handleItemChange}
+              />
+              <button type="submit">Add item</button>
+            </form>
+
+            <ul>
+              {listItems.length > 0 ? (
+                listItems.map((item, idx) => (
+                  <li key={idx}>
+                    {item.itemName}{" "}
+                    <button onClick={() => handleRemoveItem(item.itemName)}>
+                      remove ❌
+                    </button>
+                    <div>
+                      {item.itemIsDone ? (
+                        <span>Done ✅ </span>
+                      ) : (
+                        <>
+                          <span>Not done</span>
+                          {/* <span onClick={() => handleMarkDone(item.itemName)}>
+                            Mark as done: click HERE
+                          </span> */}
+                        </>
+                      )}
+                    </div>
+                  </li>
+                ))
+              ) : (
+                <p style={noItemStyle}>no items in the list</p>
+              )}
+            </ul>
+          </div>
+        )
+      }
+
+      const bodyStyle = {
+        marginLeft: "10rem",
+        marginTop: "5rem",
+      }
+
+      const noItemStyle = {
+        display: "block",
+      }
+      ReactDOM.render(<App />, document.getElementById("root"))
+    </script>
+  </body>
+</html>
